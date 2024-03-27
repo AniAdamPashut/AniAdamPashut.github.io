@@ -2,12 +2,19 @@ import os
 
 posts = os.listdir('./markdowns')
 
+for file in os.listdir('./posts'):
+    file_path = os.path.join('./posts', file)
+    if os.path.isfile(file_path):
+        os.remove(file_path)
+
 f = open('base.html')
 temp = f.read()
 f.close()
 
 for post in posts:
     with open('./markdowns/' + post) as f:
+
+        
         content = f.read()
         t = temp.replace('<replace-title-header>', post[:-3])
         t = t.replace('<replace-title-h1>', post[:-3])
