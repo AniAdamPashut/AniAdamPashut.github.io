@@ -4,7 +4,7 @@ posts = os.listdir('./markdowns')
 
 for file in os.listdir('./posts'):
     file_path = os.path.join('./posts', file)
-    if os.path.isfile(file_path):
+    if os.path.isfile(file_path) and file_path.endswith('.html'):
         os.remove(file_path)
 
 f = open('base.html')
@@ -13,7 +13,8 @@ f.close()
 
 for post in posts:
     with open('./markdowns/' + post) as f:
-
+        if not post.endswith('.md'):
+            continue
         
         content = f.read()
         t = temp.replace('<replace-title-header>', post[:-3])
