@@ -18,9 +18,23 @@ for post in posts:
 
 atags = [f'<a href="./posts/{post[:-3]}">{post[:-3]}</a>' for post in posts]
 atags = '\n'.join(atags)
-with open('index.html') as f:
-    content = f.read()
-
+content = """
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="styles.css"/>
+    <title>benAmi spews stuff</title>
+</head>
+<body>
+    <h3>Posts</h3>
+    <ul id="posts">
+        <replace-this-with-links-to-posts>
+    </ul>
+</body>
+</html>
+"""
 content = content.replace('<replace-this-with-links-to-posts>', atags)
 with open('index.html', 'w') as f:
     f.write(content)
