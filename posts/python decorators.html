@@ -4,13 +4,78 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>python decorators</title>
-    <link rel="stylesheet" href="./styles.css"/>
-    <script type="module" src="https://md-block.verou.me/md-block.js"></script>
+    <link rel="stylesheet" href="../styles.css"/>
 </head>
 <body>
-    <h1>python decorators</h1>
-    <md-block>
-        ## In Destruction
-    </md-block>
+    <div>
+        <h1>python decorators</h1>
+            <hr>
+            <br><br>
+        <article>
+            <p>Decorators are a cool feature that the python language contains. In this post I'll showcase decorators as well as something practical.</p>
+<h2>How a Basic Decorator Work</h2>
+<p>Assume we have a simple function that utilizes a decorator
+<pre><code>
+@decorator
+def function():
+    ...
+</code></pre>
+<p>This code snippet will have the same effect as the following</p>
+<pre><code>
+def function():
+    ...
+function = decorator(function)
+</code></pre>
+<p>That's the only thing decorators do.</p>
+<h2>Why do we need it though?</h2>
+<p>We want this because it allows us to play with functions before we run then. For example, we can use decorators to store some metadata, or flag a method as something (<a href="https://docs.python.org/3/library/functions.html#staticmethod">@staticmethod</a>). We can even toggle caching for a function with <a href="https://docs.python.org/3/library/functools.html#functools.cache">@cache</a> and optimize it. But those are a bit more complicated, let's focus on an easier private case.</p>
+<h2>Our usecase</h2>
+<p>Let's say we have a HTTP server. We want to find an easy way to map a certain endpoint with a function that returns something to the end user (kinda like flask).</p>
+<h3> Step One </h3>
+<p>I will start by creating a simple class to contain our logic</p>
+<pre><code>
+from typing import Callable
+
+class MySuperCoolServer:
+    def __init__(self):
+        # Assume some server logic
+        # Keep this in mind
+        self._endpoints: dict[str, Callable] = dict()
+
+# Imagine this does the things 
+def run(self): 
+    ...
+
+# This will be our decorator
+def route(self, ep): 
+    ...
+
+app = MySuperCoolServer()
+
+@app.route('/')
+def root():
+    return "Hello World"
+
+app.run()
+</code></pre>
+<h3> Step two </h3>
+
+<p>Let's see how we can define this decorator in a way that saves our endpoints and know how to call the function. For that we have the <code>_endpoints</code> variable in the class. Let's define the route method.</p>
+<pre><code>
+def route(self, endpoint):
+    def inner(method):
+        self._endpoints[endpoint] = method
+        return method</p>
+    return inner
+</code></pre>
+<p>This is a bit complicated though, let's break it down. we have 2 functions here. The <code>route</code> function and the <code>inner</code> function. The <code>inner</code> function handles the actual logic and the <code>route</code> function loads the endpoint parameter. (if this puzzles you go read about <a href="https://en.wikipedia.org/wiki/Currying">currying</a>)</p>
+<h2>Summary</h2>
+<p>That's basically the decorator and how it works. You can work on it to support more HTTP verbs (e.g. <code>POST</code> <code>DELETE</code>). A minimal working example is available under the <code>examples</code> folder in the github repo of this site.</p>
+        </article>
+    </div>
+
+    <footer>
+        made by benami
+    </footer>
 </body>
 </html>
