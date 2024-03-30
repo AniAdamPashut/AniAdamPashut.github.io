@@ -1,0 +1,10 @@
+body {
+    background-color: antiquewhite;
+    font-family: Tahoma, sans-serif;
+}   
+
+div {
+    margin: 0 auto;
+    max-width: 500px; 
+    text-align: left; 
+}
