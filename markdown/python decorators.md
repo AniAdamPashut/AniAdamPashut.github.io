@@ -35,9 +35,9 @@ def function():
 function = dec2(dec1(function))
 ```
 
-Lastly, I will establish the why. Why do we need decorators? But this question has a flaw inside, It's way too general. Decorators are no more than syntactic sugar and have many many use-cases. So I will instead ask, What do decorators allow us to do. And the answer to that question is pretty simple. Decorators allow us to play with a function inner object before execution in a nice manner.
+Lastly, I will establish the why. Why do we need decorators? But this question has a flaw inside, It's way too general. Decorators are no more than syntactic sugar and have many many use-cases. So I will instead ask, What do decorators allow us to do. And the answer to that question is pretty simple. Decorators allow us to play with a function's inner object before execution in a nice manner.
 <br><br>
-To Demonstrate it I'll show some use-cases. The @property decorator allows us to create a getter for a property on an object. The @cache decorator allows us to enable memoization for a function. The options are endless and even I managed to create one to increase coding speed. 
+To Demonstrate it I'll show some use-cases. The @property decorator allows us to create a getter for a property on an object. The @cache decorator allows us to enable memoization for a function. The options are endless but one thing stays consistent. Decorators increase efficiency.
 
 ## Curry is a dish 🥘
 Currying is a powerful technique in functional programming that allows the use of multiple "middleman" functions. Currying allows us the separate the load on different function in a chain-like setup. Although this happens automatically in functional languages (e.g. Haskell, OCaml) it is not in python, but we can still utilize it.
@@ -80,11 +80,11 @@ def func():
     ...
 ```
 
-Since the `curry(3)` expression evaluates to a decorator function it's still valid python code with the addition of the curried value bounded to the decorator function.
+Since the `curry(3)` expression evaluates to a decorator function it's still valid python code with the addition of the curried value bound to the decorator function.
 
 ## Flask is a cool framework
 
-Anyone familiar with flask knows `app.route()` function. It haunts us everywhere. The infamous flask's "Hello World" example feels magical. Although it *feels* magical, I can for you. Let's have a look at the flask "Hello World" example.
+Anyone familiar with flask knows `app.route()` function. It haunts us everywhere. The infamous flask's "Hello World" example feels magical. Let's have a look at the flask "Hello World" example.
 
 ```py
 from flask import Flask
@@ -98,7 +98,7 @@ def root():
 app.run()
 ```
 
-This snippet is kinda obvious, you import flask, create an application and run it. The more *magical* part is the root function. How does it bind the root function to run on each request to the `/` endpoint? To answer this question I will create a class that will try to mimic the `Flask` function. The class will hold 3 functions `__init__`, `run` and `route` (I will only implement `route`).
+This snippet is kinda obvious, you import flask, create an application and run it. The more *magical* part is the root function. How does it bind the root function to run on each request to the `"/"` endpoint? To answer this question I will create a class that will try to mimic the `Flask` function. The class will hold 3 functions `__init__`, `run` and `route` (I will only implement `route`).
 
 
 ```py
