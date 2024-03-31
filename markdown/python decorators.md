@@ -35,12 +35,12 @@ def function():
 function = dec2(dec1(function))
 ```
 
-Lastly, I will establish the why. Why do we need decorators? But this question has a flaw inside, It's way too general. Decorators are no more than syntactic suger and have many many usecases. So I will instead ask, What do decorators allow us to do. And the answer to that question is pretty simple. Decorators allow us to play with a function inner object before execution in a nice manner.
+Lastly, I will establish the why. Why do we need decorators? But this question has a flaw inside, It's way too general. Decorators are no more than syntactic sugar and have many many use-cases. So I will instead ask, What do decorators allow us to do. And the answer to that question is pretty simple. Decorators allow us to play with a function inner object before execution in a nice manner.
 <br><br>
-To Demonstrate it I'll show some usecases. The @property decorator allows us to create a getter for a property on an object. The @cache decorator allows us to enable memoization for a function. The options are endless and even I managed to create one to increase coding speed. 
+To Demonstrate it I'll show some use-cases. The @property decorator allows us to create a getter for a property on an object. The @cache decorator allows us to enable memoization for a function. The options are endless and even I managed to create one to increase coding speed. 
 
 ## Curry is a dish 🥘
-Currying is a powerfull technique in functional programming that allows the use of multiple "middleman" functions. Currying allows us the seperate the load on different function in a chain-like setup. Although this happends automatically in functional languages (e.g. Haskell, OCaml) it is not in python, but we can still utilize it.
+Currying is a powerful technique in functional programming that allows the use of multiple "middleman" functions. Currying allows us the separate the load on different function in a chain-like setup. Although this happens automatically in functional languages (e.g. Haskell, OCaml) it is not in python, but we can still utilize it.
 
 A simple example for currying is an add function. A normal un-curried function would look like this
 ```py
@@ -84,7 +84,7 @@ Since the `curry(3)` expression evaluates to a decorator function it's still val
 
 ## Flask is a cool framework
 
-Anyone familier with flask knows `app.route()` function. It haunts us everywhere. The infamous flask's "Hello World" example feels magical. Although it *feels* magical, I can for you. Let's have a look at the flask "Hello World" example.
+Anyone familiar with flask knows `app.route()` function. It haunts us everywhere. The infamous flask's "Hello World" example feels magical. Although it *feels* magical, I can for you. Let's have a look at the flask "Hello World" example.
 
 ```py
 from flask import Flask
