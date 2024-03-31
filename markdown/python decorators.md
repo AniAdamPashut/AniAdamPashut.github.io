@@ -11,7 +11,7 @@ Decorators are a cool feature that the python language contains. In this post I'
 I already answered the what so I'll go straight to the how, why and where.
 A decorator is noted at the top of a function's signature using the `@` symbol. See the following example as reference.
 
-```py
+```
 @decorator
 def function():
     pass
@@ -19,7 +19,7 @@ def function():
 
 Please note that this is equal to doing `function = decorator(function)`. The order of execution for multiple decorators is as follows
 
-```py
+```
 @dec2
 @dec1
 def function():
@@ -28,7 +28,7 @@ def function():
 
 Translates to:
 
-```py
+```
 def function():
     pass
 
@@ -43,13 +43,13 @@ To Demonstrate it I'll show some use-cases. The @property decorator allows us to
 Currying is a powerful technique in functional programming that allows the use of multiple "middleman" functions. Currying allows us the separate the load on different function in a chain-like setup. Although this happens automatically in functional languages (e.g. Haskell, OCaml) it is not in python, but we can still utilize it.
 
 A simple example for currying is an add function. A normal un-curried function would look like this
-```py
+```
 def add(x, y):
     return x + y
 ```
 
 An example that contains currying looks like this
-```py
+```
 def add(x):
     def adder(y)
         return x + y
@@ -57,7 +57,7 @@ def add(x):
 ```
 
 This allows us to bind the `x` variable to the function and reuse it multiple times. 
-```py
+```
 add3 = add(3)
 print(add3(2)) # 5
 print(add3(7)) # 10
@@ -66,7 +66,7 @@ print(add3(69)) # 72
 
 The use of currying helps us when using decorators because the decorator can be an Expression. This means that I can bind a value to my decorator function while also using the function to decorate.
 
-```py
+```
 def curry(x):
     def actual_decorator(method):
         print(x)
@@ -86,7 +86,7 @@ Since the `curry(3)` expression evaluates to a decorator function it's still val
 
 Anyone familiar with flask knows `app.route()` function. It haunts us everywhere. The infamous flask's "Hello World" example feels magical. Let's have a look at the flask "Hello World" example.
 
-```py
+```
 from flask import Flask
 
 app = Flask(__name__)
@@ -101,7 +101,7 @@ app.run()
 This snippet is kinda obvious, you import flask, create an application and run it. The more *magical* part is the root function. How does it bind the root function to run on each request to the `"/"` endpoint? To answer this question I will create a class that will try to mimic the `Flask` function. The class will hold 3 functions `__init__`, `run` and `route` (I will only implement `route`).
 
 
-```py
+```
 from typing import Callable
 
 class SoNotAFlaskCloneForReal:
@@ -121,7 +121,7 @@ class SoNotAFlaskCloneForReal:
 
 Utilizing this class will be the same as utilizing the `Flask` class. This is all thanks to the currying function `route` returning the curried decorator. An example of execution is included below and a full working example with a server is included in the github repo of this site.
 
-```py
+```
 app = SoNotAFlaskCloneForReal()
 
 @app.route('/')

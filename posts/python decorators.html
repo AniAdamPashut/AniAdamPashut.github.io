@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>benami shitposting</title>
+    <link rel="stylesheet" href="/atom.css">
+    <link rel="stylesheet" href="/styles.css">
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.4.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <article>
+        <h1 id="python-decorators">Python Decorators</h1>
+<p>Decorators are a cool feature that the python language contains. In this post I’ll showcase decorators as well as one easy practical example. But first, What is a decorator and how does it work?</p>
+<h2 id="the-ws">The W’s</h2>
+<p>I already answered the what so I’ll go straight to the how, why and where. A decorator is noted at the top of a function’s signature using the <code>@</code> symbol. See the following example as reference.</p>
+<pre><code>@decorator
+def function():
+    pass</code></pre>
+<p>Please note that this is equal to doing <code>function = decorator(function)</code>. The order of execution for multiple decorators is as follows</p>
+<pre><code>@dec2
+@dec1
+def function():
+    pass</code></pre>
+<p>Translates to:</p>
+<pre><code>def function():
+    pass
+
+function = dec2(dec1(function))</code></pre>
+<p>Lastly, I will establish the why. Why do we need decorators? But this question has a flaw inside, It’s way too general. Decorators are no more than syntactic sugar and have many many use-cases. So I will instead ask, What do decorators allow us to do. And the answer to that question is pretty simple. Decorators allow us to play with a function’s inner object before execution in a nice manner. <br><br> To Demonstrate it I’ll show some use-cases. The <span class="citation" data-cites="property">@property</span> decorator allows us to create a getter for a property on an object. The <span class="citation" data-cites="cache">@cache</span> decorator allows us to enable memoization for a function. The options are endless but one thing stays consistent. Decorators increase efficiency.</p>
+<h2 id="curry-is-a-dish">Curry is a dish 🥘</h2>
+<p>Currying is a powerful technique in functional programming that allows the use of multiple “middleman” functions. Currying allows us the separate the load on different function in a chain-like setup. Although this happens automatically in functional languages (e.g. Haskell, OCaml) it is not in python, but we can still utilize it.</p>
+<p>A simple example for currying is an add function. A normal un-curried function would look like this</p>
+<pre><code>def add(x, y):
+    return x + y</code></pre>
+<p>An example that contains currying looks like this</p>
+<pre><code>def add(x):
+    def adder(y)
+        return x + y
+    return adder</code></pre>
+<p>This allows us to bind the <code>x</code> variable to the function and reuse it multiple times.</p>
+<pre><code>add3 = add(3)
+print(add3(2)) # 5
+print(add3(7)) # 10
+print(add3(69)) # 72</code></pre>
+<p>The use of currying helps us when using decorators because the decorator can be an Expression. This means that I can bind a value to my decorator function while also using the function to decorate.</p>
+<pre><code>def curry(x):
+    def actual_decorator(method):
+        print(x)
+        return method
+
+    return actual_decorator
+    
+
+@curry(3)
+def func():
+    ...</code></pre>
+<p>Since the <code>curry(3)</code> expression evaluates to a decorator function it’s still valid python code with the addition of the curried value bound to the decorator function.</p>
+<h2 id="flask-is-a-cool-framework">Flask is a cool framework</h2>
+<p>Anyone familiar with flask knows <code>app.route()</code> function. It haunts us everywhere. The infamous flask’s “Hello World” example feels magical. Let’s have a look at the flask “Hello World” example.</p>
+<pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route(&quot;/&quot;)
+def root():
+    return &quot;hello, world&quot;
+
+app.run()</code></pre>
+<p>This snippet is kinda obvious, you import flask, create an application and run it. The more <em>magical</em> part is the root function. How does it bind the root function to run on each request to the <code>"/"</code> endpoint? To answer this question I will create a class that will try to mimic the <code>Flask</code> function. The class will hold 3 functions <code>__init__</code>, <code>run</code> and <code>route</code> (I will only implement <code>route</code>).</p>
+<pre><code>from typing import Callable
+
+class SoNotAFlaskCloneForReal:
+    def __init__(self):
+        self._endpoints: dict[str, Callable] = dict()
+
+
+    def run(self):
+        ...
+
+    def route(self, ep):
+        def actual_decorator(method):
+            self._endpoints[ep] = method
+            return method
+        return actual_decorator</code></pre>
+<p>Utilizing this class will be the same as utilizing the <code>Flask</code> class. This is all thanks to the currying function <code>route</code> returning the curried decorator. An example of execution is included below and a full working example with a server is included in the github repo of this site.</p>
+<pre><code>app = SoNotAFlaskCloneForReal()
+
+@app.route(&#39;/&#39;)
+def root():
+    return &quot;Hello, World&quot;
+
+app.run()</code></pre>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://peps.python.org/pep-0318/">decorators</a></li>
+<li><a href="https://docs.python.org/3/library/functions.html#property"><span class="citation" data-cites="property">@property</span></a></li>
+<li><a href="https://docs.python.org/3/library/functools.html#functools.cache"><span class="citation" data-cites="cache">@cache</span></a></li>
+<li><a href="https://www.linkedin.com/advice/0/what-currying-functional-programming-how-can-you-bfyhe">currying (general)</a></li>
+<li><a href="https://wiki.haskell.org/Currying">currying (haskell)</a></li>
+</ul>
+
+    </article>
+    <br>
+    <footer>
+        This was written by the simplest of men for the simple man. Made by <a href="https://open.spotify.com/track/1F5zcJWVYelsmk1493aNm1?si=bf3bb36860af4569">AniAdamPashut</a> also known as benAmi.
+    </footer>
+
+</body>
+</html>
