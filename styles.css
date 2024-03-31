@@ -12,7 +12,7 @@ article {
     border-radius: 15px;
 }
 
-a:visited {
+a:visited, a {
     color: #e7ecf1;
     
 }
