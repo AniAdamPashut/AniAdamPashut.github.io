@@ -33,12 +33,17 @@ index_updating = """
             <LIST_GOES_HERE/>
         </ul>
     </article>
+    <footer>
+        This website is written by the simplest of men for the simple man. Made by <a href="https://open.spotify.com/track/1F5zcJWVYelsmk1493aNm1?si=bf3bb36860af4569" target="_blank">AniAdamPashut</a> also known as benAmi.
+    </footer>
 </body>
 </html>"""
 
 post_list = []
 
 for file in files:
+    if not file.endswith('.md'):
+        continue
     html = pypandoc.convert_file(f'{md_folder}\\{file}', 'html', extra_args=['--wrap=none'])
     full_content = base.replace("<CONTENT_GOES_IN_HERE/>", html)
 

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>benami shitposting</title>
+    <link rel="stylesheet" href="../atom.css">
+    <link rel="stylesheet" href="../styles.css">
+    <link href='https://fonts.googleapis.com/css?family=JetBrains Mono' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Open Sans' rel='stylesheet'>
+    <script src="/highlight.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+    <article>
+        <h1 id="mapping">Mapping</h1>
+<p>Functional programming (FP) heavily affect the way we program. Almost all programs use one or more aspects of functional programming. Even when using OOP (which often seen as the arch nemesis of FP) we use FP methods to better our code.</p>
+<h2 id="recursion-immutability-and-purity">Recursion, Immutability and Purity</h2>
+<p>Functional programming consists of methods and practices that might conflict with our current view on programming. In a functional language (e.g haskell) we cannot mutate a variable. Everything is constant. Assume we have an array of integers and we want to print it. A non-functional approach could look like this.</p>
+<pre><code>void print_array(int *arr, int len) {
+    for (size_t i = 0; i &lt; len; i++) {
+        printf(&quot;%d, &quot;, arr[i]);
+    }
+    printf(&quot;\n&quot;);
+}</code></pre>
+<p>But this way has a flaw in it. We mutate the <code>i</code> variable repeatedly on each iteration of the loop. Remember, this is not allowed in functional languages. Functional languages work around this with the use of recursion. A recursive function approach could look like this:</p>
+<pre><code>void print_array(int *arr, int len) {
+    if (len == 0) {
+        printf(&quot;\n&quot;);
+        return;
+    }
+    printf(&quot;%d, &quot;, *arr);
+    print_array(arr + 1, len - 1);
+}</code></pre>
+<p>A functional language prefer this approach as it keeps the functions <em>pure</em>. A pure function will produce no “side-effects” and it’s output will only depend on it’s input. (The example above is impure but it demonstrates the use of recursion) For example the function <code>lambda x: x + x</code> in python is a pure function as it produces no side effects and the output is based solely on it’s input.</p>
+<h2 id="pythons-map-function">Python’s map function</h2>
+<p>The built-in function <code>map</code> is a very useful function. Do you know that it has functional origins? Let’s try to create it by ourselves and step by step return to the functional origins. First, we would create a function that takes a list of integers and adds one to each. Just to get a sense of what we want to do.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step_one(array):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> []</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> array:</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        result.append(x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code></pre></div>
+<p>This approach works, but it’s not as extendable as the build-in map function. let’s try to make it more adaptive. instead of computing the value inside our function we will take another function that computes it for us. That way we won’t have to create a new function for each transformation.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step_two(transform, array):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> []</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> x <span class="kw">in</span> array:</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        result.append(transform(x))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code></pre></div>
+<p>This function also works and it’s adaptive. So we can stop here. Just kidding, we can’t. This function is impure. Due to <code>result.append</code> the function mutates a variable and produces a side effect. Let’s try to come up with a more functional way. Maybe recursion will solve this problem.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step_three(transform, array):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="bu">len</span>(array) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> []</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [transform(array[<span class="dv">0</span>])] <span class="op">+</span> step_three(transform, array[<span class="dv">1</span>:])</span></code></pre></div>
+<p>Now this is a pure function. This function produces no side effect. But This function is kinda awkward a simple <code>(transform(x) for x in array)</code> would suffice. Because python is a mutable language in it’s nature it seems weird to try and avoid it. Using a functional language will do this justice</p>
+<h2 id="a-functional-map">A Functional Map</h2>
+<div class="sourceCode" id="cb6"><pre class="sourceCode fs"><code class="sourceCode fsharp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> <span class="kw">rec</span> mapOnList transform xs =</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> xs <span class="kw">with</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    | <span class="op">[]</span> -&gt; <span class="op">[]</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    | first::rest -&gt; transform first :: map&#39; transform rest</span></code></pre></div>
+<p>This function is pretty simple. We get 2 arguments, <code>transform</code> and <code>xs</code>. We match <code>xs</code> against the empty list, any map on an empty list will result in an empty list so we use it as the base case for our recursion. If <code>xs</code> is not empty, we split it to 2 parts. Its head, the first element and its tail, the rest of the elements. A python translation of this will look somewhat like this:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode py"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>first, tail <span class="op">=</span> xs[<span class="dv">0</span>], xs[<span class="dv">1</span>:]</span></code></pre></div>
+<p>We apply the transformation on the first element and append the result of the rest of the elements recursively. We then append it to the transformation of the first and return it.</p>
+<h2 id="map-is-just-an-elevator">Map is Just an Elevator</h2>
+<p>All of this is very nice, but it isn’t what the map function really is. Generally, the job of a map function is to elevate another function from a base world to an elevated world. For example, let’s define an add 1 function: <code>let add1 x = x + 1</code>. The add1 function operate on integers. The integer world is our base world. Using the map function we can create a function that will add 1 to each number in a list of integers <code>let addOneToEach = mapOnList add1</code>. The map function elevates the add1 function from its base domain (integers) into an elevated domain (integer lists). In the same way, we can define a map function that will work on option types.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode fs"><code class="sourceCode fsharp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mapOnOption f opt = </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">match</span> opt <span class="kw">with</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    | None -&gt; None</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    | Some x -&gt; Some <span class="op">(</span>f x<span class="op">)</span></span></code></pre></div>
+<p>A function such as <code>let addOneToSomeValue = mapOnOption add1</code> that will take an <code>int option</code> and will return another <code>int option</code> with the wrapped value increased by one. Though the implementation is different the concept is the same. We take a function <code>f</code> and change it’s domain.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=nuML9SmdbJ4">Dear Functional Bros</a></li>
+<li><a href="https://fsharpforfunandprofit.com/posts/elevated-world/#map">Elevated World</a></li>
+<li><a href="https://learnyouahaskell.com/higher-order-functions#maps-and-filters">Maps and Filters</a></li>
+</ul>
+
+    </article>
+    <br>
+    <footer>
+        This website is written by the simplest of men for the simple man. Made by <a href="https://open.spotify.com/track/1F5zcJWVYelsmk1493aNm1?si=bf3bb36860af4569" target="_blank">AniAdamPashut</a> also known as benAmi.
+    </footer>
+
+</body>
+</html>

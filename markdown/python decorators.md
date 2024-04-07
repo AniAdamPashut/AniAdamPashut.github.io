@@ -1,7 +1,3 @@
----
-title: Python Decorators
-...
-
 # Python Decorators
 
 Decorators are a cool feature that the python language contains. In this post I'll showcase decorators as well as one easy practical example. But first, What is a decorator and how does it work?

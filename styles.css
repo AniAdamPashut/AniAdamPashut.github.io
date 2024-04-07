@@ -2,6 +2,9 @@ body {
     background-color: #574a6d;
     font-family: 'Open Sans';
     color: #e7ecf1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 article {
@@ -19,9 +22,11 @@ a:visited, a {
 
 footer {
     text-align: center;
+    margin-top: auto;
 }
 
 code {
     border-radius: 5px;
     font-family: 'JetBrains Mono';
+    background-color: #282038;
 }
