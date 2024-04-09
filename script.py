@@ -27,7 +27,7 @@ index_updating = """
 </head>
 <body>
     <article>
-        <h1>The shitposting website benami wrote for suffering</h1>
+        <h1>The shitposting website benami wrote for "fun"</h1>
         <h3>Posts</h3>
         <ul id="posts">
             <LIST_GOES_HERE/>
