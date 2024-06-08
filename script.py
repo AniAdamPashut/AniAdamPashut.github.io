@@ -1,7 +1,7 @@
 import os
 import pypandoc
 
-folder_path = r"C:\Users\mineb\blog\aniadampashut.github.io"
+folder_path = r"."
 os.chdir(folder_path)
 
 md_folder = r".\markdown"
