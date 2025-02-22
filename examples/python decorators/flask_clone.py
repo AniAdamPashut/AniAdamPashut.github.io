@@ -69,7 +69,7 @@ class Server:
     def route(self, ep):
         def inner(method): 
             self._endpoints[ep] = method
-            return 4
+            return method
         return inner
 
 

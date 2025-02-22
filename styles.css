@@ -19,7 +19,7 @@ body {
 }
 
 article {
-    max-width: 700px;
+    width: 700px;
     background-color: #41335a;
     padding: 40px;
     border-radius: 15px;
@@ -38,6 +38,16 @@ code {
     border-radius: 5px;
     font-family: 'JetBrains Mono';
     background-color: #282038;
-    padding: 5zpx;
+    padding: 0 2px;
     margin: 1em 0;
+}
+
+img {
+    width: 100%;
+}
+
+figcaption {
+    text-align: center;
+    margin-top: 0.1em;
+    font-size: .75em;
 }

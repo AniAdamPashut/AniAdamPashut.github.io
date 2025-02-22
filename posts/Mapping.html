@@ -18,21 +18,21 @@
 <p>Functional programming (FP) heavily affect the way we program. Almost all programs use one or more aspects of functional programming. Even when using OOP (which often seen as the arch nemesis of FP) we use FP methods to better our code.</p>
 <h2 id="recursion-immutability-and-purity">Recursion, Immutability and Purity</h2>
 <p>Functional programming consists of methods and practices that might conflict with our current view on programming. In a functional language (e.g haskell) we cannot mutate a variable. Everything is constant. Assume we have an array of integers and we want to print it. A non-functional approach could look like this.</p>
-<pre><code>void print_array(int *arr, int len) {
-    for (size_t i = 0; i &lt; len; i++) {
-        printf(&quot;%d, &quot;, arr[i]);
-    }
-    printf(&quot;\n&quot;);
-}</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> print_array<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>arr<span class="op">,</span> <span class="dt">int</span> len<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> len<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, &quot;</span><span class="op">,</span> arr<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>But this way has a flaw in it. We mutate the <code>i</code> variable repeatedly on each iteration of the loop. Remember, this is not allowed in functional languages. Functional languages work around this with the use of recursion. A recursive function approach could look like this:</p>
-<pre><code>void print_array(int *arr, int len) {
-    if (len == 0) {
-        printf(&quot;\n&quot;);
-        return;
-    }
-    printf(&quot;%d, &quot;, *arr);
-    print_array(arr + 1, len - 1);
-}</code></pre>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> print_array<span class="op">(</span><span class="dt">int</span> <span class="op">*</span>arr<span class="op">,</span> <span class="dt">int</span> len<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>len <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%d</span><span class="st">, &quot;</span><span class="op">,</span> <span class="op">*</span>arr<span class="op">);</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    print_array<span class="op">(</span>arr <span class="op">+</span> <span class="dv">1</span><span class="op">,</span> len <span class="op">-</span> <span class="dv">1</span><span class="op">);</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>A functional language prefer this approach as it keeps the functions <em>pure</em>. A pure function will produce no “side-effects” and it’s output will only depend on it’s input. (The example above is impure but it demonstrates the use of recursion) For example the function <code>lambda x: x + x</code> in python is a pure function as it produces no side effects and the output is based solely on it’s input.</p>
 <h2 id="pythons-map-function">Python’s map function</h2>
 <p>The built-in function <code>map</code> is a very useful function. Do you know that it has functional origins? Let’s try to create it by ourselves and step by step return to the functional origins. First, we would create a function that takes a list of integers and adds one to each. Just to get a sense of what we want to do.</p>

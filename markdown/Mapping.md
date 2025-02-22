@@ -4,7 +4,7 @@ Functional programming (FP) heavily affect the way we program. Almost all progra
 
 ## Recursion, Immutability and Purity
 Functional programming consists of methods and practices that might conflict with our current view on programming. In a functional language (e.g haskell) we cannot mutate a variable. Everything is constant. Assume we have an array of integers and we want to print it. A non-functional approach could look like this.
-```
+```c
 void print_array(int *arr, int len) {
     for (size_t i = 0; i < len; i++) {
         printf("%d, ", arr[i]);
@@ -13,7 +13,7 @@ void print_array(int *arr, int len) {
 }
 ```
 But this way has a flaw in it. We mutate the `i` variable repeatedly on each iteration of the loop. Remember, this is not allowed in functional languages. Functional languages work around this with the use of recursion. A recursive function approach could look like this:
-```
+```c
 void print_array(int *arr, int len) {
     if (len == 0) {
         printf("\n");

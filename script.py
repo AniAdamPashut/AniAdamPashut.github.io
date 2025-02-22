@@ -1,19 +1,22 @@
+#!/usr/bin/env python
+
 import os
 import pypandoc
 
 folder_path = r"."
 os.chdir(folder_path)
 
-md_folder = r".\markdown"
-posts_folder = r".\posts"
+md_folder = r"./markdown"
+posts_folder = r"./posts"
 files = os.listdir(md_folder)
 posts = os.listdir(posts_folder)
 
-with open(r'.\base.html') as f:
+with open(r'./base.html') as f:
     base = f.read()
 
 for post in posts:
-    os.remove(f'{posts_folder}\\{post}')
+    os.remove(f'{posts_folder}/{post}')
+
 
 index_updating = """
 <!DOCTYPE html>
@@ -28,10 +31,10 @@ index_updating = """
 <body>
     <div class="all">
         <article>
-            <h1>The shitposting website benami wrote for "fun"</h1>
+            <h1>A Simple Blog For The Simple Man</h1>
             <h3>Posts</h3>
             <ul id="posts">
-                <LIST_GOES_HERE/>
+<LIST_GOES_HERE/>
             </ul>
         </article>
         <footer>
@@ -39,17 +42,18 @@ index_updating = """
         </footer>
     </div>
 </body>
-</html>"""
+</html>
+"""
 
 post_list = []
 
 for file in files:
     if not file.endswith('.md'):
         continue
-    html = pypandoc.convert_file(f'{md_folder}\\{file}', 'html', extra_args=['--wrap=none'])
+    html = pypandoc.convert_file(f'{md_folder}/{file}', 'html', extra_args=['--wrap=none'])
     full_content = base.replace("<CONTENT_GOES_IN_HERE/>", html)
 
-    out = f'{posts_folder}\\{file[:-3]}.html'
+    out = f'{posts_folder}/{file[:-3]}.html'
     with open(out, 'w', encoding='utf-8') as f:
         f.write(full_content.encode('utf-8').replace(b'\r\n', b'\n').decode())
 
