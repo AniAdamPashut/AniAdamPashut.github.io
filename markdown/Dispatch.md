@@ -12,7 +12,7 @@ Consider a letter you wish to send your friend. You could write it, sign it and 
 
 You are a part of a team. Whether it's your team at work, the group of your friends or the family in your household, you are part of that. Being the only one whose promoting the necessary changes for the product to improve is tiring. That one friend who always gathers everyone for each gathering is (or will eventually be) exhausted. Your wife or mom that holds the entire house on her shoulder while working everyday is probably burnt out.
 
-In order to mediate it, we split the loads more or less equally. We use a common interface that allows us to disregard what actually happens behind that interface. A mail box is a great example of such interface. Not only I don't care about the mailman who delivers my letter, I also don't care about the route he takes. I don't care if he rides a bicycle or drives a car. We simply don't care. This how we can the Single Responsibility Principle to the next step. By integrating the Dependency Inversion Principle. Both us and the mailman depend on the mailbox interface, but none care about what's happening at the other side.
+In order to mediate it, we split the loads more or less equally. We use a common interface that allows us to disregard what actually happens behind that interface. A mail box is a great example of such interface. Not only I don't care about the mailman who delivers my letter, I also don't care about the route he takes. I don't care if he rides a bicycle or drives a car. We simply don't care. This how we can take the Single Responsibility Principle to the next step. By integrating the Dependency Inversion Principle. Both us and the mailman depend on the mailbox interface, but none care about what's happening at the other side.
 
 ![diagram separating the responsibilities between the writer and the sender](../assets/Dispatch/responsibilities_separated_mail_sending.png)
 
@@ -23,7 +23,7 @@ An interface, a trait (even an abstract class) are not more then just a contract
 
 ## How Can I Depend
 
-When depending on a specific component, we "marry" it. We are tightly coupled to it, and like marriage, divorcing it is hard. Instead, we should depend on an interface, a pre-defined behavior that we can demand and the component can oblige. There are multiple ways to achieve this intent. How can we know what to choose? 
+When depending on a specific component, we "marry" it. We are tightly coupled to it, and like marriage, divorcing it is hard. Instead, we should depend on an interface, a pre-defined behavior that we can demand and the component can oblige. However, there are multiple ways to achieve this intent. How can we know what to choose? 
 
 Virtual method table (often abbreviated as *vtable*) is a structure that compiler programmers use to enable dynamic dispatch. The vtable masks the implementations behind a pointer indirection, allowing us to dispatch dynamically with ease. When debating static vs. dynamic dispatch, the discussion is mostly "Do we want a vtable or not?". But this view is often too narrow, as different implementations of dynamic dispatch can utilize the vtable differently creating a variety of options for us.
 
@@ -35,12 +35,10 @@ On the other hand, Virtual Inheritance enforces the compiler to include a vtable
 
 ![a diagram that shows the memory layout of an object in cpp compiled with gcc](../assets/Dispatch/cpp_object_representation_in_memory.png)
 
-Interfaces, traits, however you want to name them, propose a different solution to this. Interfaces, introduce the usage of fat pointer. Fat pointers are a structure that has 2 pointers inside them, increasing the width from one pointer size to two pointer size, thus the name, Fat Pointers. The way they work closely relate to the virtual inheritance way of work, but it has one key difference. While an object with virtual inheritance points to a vtable that points to the functions. A fat pointer will have one pointer pointing on the object, and the other - on the vtable. This reduces the amount of pointer indirection, easing the speed loss, but gives away some stack space to achieve.
+Interfaces, traits, however you want to name them, propose a different solution to this. Interfaces, introduce the usage of fat pointer. Fat pointers are a structure that has 2 pointers inside it, increasing the width from one pointer size to two pointer size, thus the name, Fat Pointers. The way they work closely relate to the virtual inheritance way of work, but it has one key difference. While an object with virtual inheritance points to a vtable that points to the functions. A fat pointer will have one pointer pointing on the object, and the other - to the vtable. This reduces the amount of pointer indirection, easing the speed loss, but sacrifices space on the stack.
 
 ![fat pointer implementation diagram, shows how having the vtable on the stack reduces indirections](../assets/Dispatch/fat_pointer_implementation_diagram.png)
 
-
-
-In conclusion, how we dispatch is important. From how it affect our design to the runtime implication, it matters. When choosing one over the other, especially in low-level languages, we need to consider. Whether we are willing to sacrifice binary size for faster runtime, or are we willing to give up some stack space for less indirection is important when designing and writing code.
+In conclusion, how we dispatch is important. From how it affect our design to the runtime implication, it matters. When choosing one over the other, especially in low-level languages, we need to consider. Whether we are willing to sacrifice binary size for faster runtime, or are we willing to give up some stack space for less indirection is important when designing code. 
 
 All the images are available under the `markdown/assets` folder in the github repo of this blog and can be used freely. For the more hardcore guys I included IDA screenshots that might shed more light on the complicated implementations. Some diagram show simplified versions of the memory layout (They would be way too large) but are fairly accurate. Example files are available in the examples directory.
